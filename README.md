@@ -1,0 +1,3 @@
+# ItemLocus
+
+ItemLocus is a local-first, open-source home item finder. It works with existing home security cameras to remember where belongings such as keys, tools, and other everyday objects were last seen, and to answer questions like "Where are my keys?" It is intended to help people living with dementia or other memory loss, their caregivers, and anyone who has trouble keeping track of things. The project is licensed under the GNU Affero General Public License v3.0; commercial licensing is also available from the author. The project is in planning; this repository currently holds documentation only.
