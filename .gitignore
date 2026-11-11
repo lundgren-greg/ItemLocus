@@ -1,0 +1,23 @@
+# User photos, indexed copies, crops, databases: never commit
+photos/
+data/
+crops/
+*.db
+*.sqlite
+*.sqlite3
+
+# Model weights
+*.pt
+*.pth
+*.onnx
+*.safetensors
+*.bin
+*.ckpt
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/

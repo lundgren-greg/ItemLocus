@@ -2,7 +2,7 @@
 
 ItemLocus is a local-first, open-source project that helps people find everyday belongings at home. It works with existing security cameras to remember where items such as keys, tools, wallets, remotes, or glasses were last seen, and to answer questions like **"Where are my keys?"**
 
-This repository is in **planning**. It currently contains documentation and a project scaffold only. There is no application or detection code yet.
+This repository is in **planning**, with one exception: a small **photo-only test prototype** (see [Try the photo test](#try-the-photo-test)) that works from a few still photos. There is no camera, Frigate, or RTSP integration yet.
 
 ## Who it is for
 
@@ -25,11 +25,41 @@ The project aims to support independence and reduce time spent searching. It is 
 | Area | Status |
 | --- | --- |
 | Public documentation | In progress (this repository) |
-| Item enrollment, detection, and last-seen store | Not started |
+| Photo-only test prototype (enroll items, ask where they are, from a few still photos; CLI and localhost page) | Exists, experimental; real-model path not yet validated. No camera integration. See [docs/PHOTO-TEST.md](docs/PHOTO-TEST.md) |
+| Camera-based item enrollment, detection, and last-seen store | Not started |
 | Query UI and voice assistant | Not started |
 | Builds, packages, or releases | None — no implementation work until the docs are accepted and a later milestone is approved |
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for planned milestones, risks, and non-goals. See [docs/AI-INTEGRATION.md](docs/AI-INTEGRATION.md) for the planned AI architecture. See [docs/PRIVACY.md](docs/PRIVACY.md) for privacy rules. See [CONTRIBUTING.md](CONTRIBUTING.md) if you want to help.
+
+## Try the photo test
+
+A way to try the idea today with a few photos of your rooms. Everything runs on your computer; **nothing is uploaded anywhere**. The only network use is the one-time download of model weights by the model libraries on first run (roughly 1.2 GB for the default OWLv2 detector and CLIP embedder; allow a few minutes). Details, limits, and licences are in [docs/PHOTO-TEST.md](docs/PHOTO-TEST.md).
+
+Windows PowerShell, from the repository root (Python 3.10 or newer):
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+# Optional, for an NVIDIA GPU: install CUDA PyTorch first (see the comment in requirements.txt)
+pip install -r requirements.txt
+```
+
+Put room photos in `photos\`, optionally one sub-folder per room (`photos\kitchen\`, `photos\office\`). Use photos without people where you can; if a person is detected, that region is blacked out in the saved copy. Avoid photographing medicine, documents, or screens.
+
+```powershell
+python -m itemlocus ingest photos                    # room = sub-folder name; or: --room kitchen
+python -m itemlocus enroll "house keys" --query keys --ref keys-closeup.jpg
+python -m itemlocus enroll "wallet"                  # text-only: no reference photo
+python -m itemlocus find "where are my house keys?"  # add --json or --verbose for scores
+python -m itemlocus serve                            # then open http://127.0.0.1:8765/
+```
+
+`find` prints the room, confidence, and box, and writes an object-only crop to `data\crops\`. Below the confidence threshold it says it is not sure. Photos, the database, and crops are stored under `data\` (ignored by git). Use `--photos-dir` / `--data-dir` or the `ITEMLOCUS_PHOTOS` / `ITEMLOCUS_DATA` environment variables to change locations, `--device cpu|cuda` to force a device, and `--detector yoloworld` for the optional faster detector.
+
+`serve` binds to 127.0.0.1 only and refuses other addresses. The page has no login; `--allow-non-loopback-UNSAFE` overrides the refusal and should only be used on a network you fully trust.
+
+To run the tests (no models or GPU needed): `pip install -r requirements-dev.txt` then `python -m pytest`.
 
 ## How it is planned to work
 

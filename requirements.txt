@@ -1,0 +1,11 @@
+# Runtime requirements for the photo-only test (local models only).
+pillow>=10.0
+numpy>=1.26
+transformers>=4.45,<5   # OWLv2 detector (Apache-2.0) and CLIP / DINOv2 embedders
+# PyTorch: this plain line installs the CPU build on Windows and works everywhere.
+# For the NVIDIA GPU build, install torch first, for example:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu124
+# then run: pip install -r requirements.txt
+torch>=2.2
+# Optional, only for `--detector yoloworld` (ultralytics is AGPL-3.0):
+#   pip install "ultralytics>=8.3"
