@@ -1,0 +1,4 @@
+# Test requirements: no torch, ultralytics, or transformers needed.
+pytest>=8.0
+pillow>=10.0
+numpy>=1.26
