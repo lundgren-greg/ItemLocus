@@ -87,4 +87,4 @@ Answer **found** only if the best candidate has `confidence >= 0.60` **and** the
 - Person masking is only as good as the detector. A missed person is stored unmasked. Do not ingest photos you would not be comfortable having on disk, and do not photograph medicine, documents, screens, or other sensitive material; the prototype has **no** sensitive-category filter.
 - Snapshots are not time-ordered "last seen"; each photo is just a place the item might be.
 - The first run downloads model weights from the model hosts; that is the only network use. Nothing is uploaded.
-- The localhost page is loopback-only and has no login; anyone on that machine can use it.
+- The localhost page is loopback-only and has no login; anyone on that machine can use it. `--allow-non-loopback-UNSAFE` overrides the refusal; use it only on a network you fully trust.

@@ -57,7 +57,7 @@ python -m itemlocus serve                            # then open http://127.0.0.
 
 `find` prints the room, confidence, and box, and writes an object-only crop to `data\crops\`. Below the confidence threshold it says it is not sure. Photos, the database, and crops are stored under `data\` (ignored by git). Use `--photos-dir` / `--data-dir` or the `ITEMLOCUS_PHOTOS` / `ITEMLOCUS_DATA` environment variables to change locations, `--device cpu|cuda` to force a device, and `--detector yoloworld` for the optional faster detector.
 
-`serve` binds to 127.0.0.1 only and refuses other addresses.
+`serve` binds to 127.0.0.1 only and refuses other addresses. The page has no login; `--allow-non-loopback-UNSAFE` overrides the refusal and should only be used on a network you fully trust.
 
 To run the tests (no models or GPU needed): `pip install -r requirements-dev.txt` then `python -m pytest`.
 

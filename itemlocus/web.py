@@ -9,6 +9,8 @@ from email import policy
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse
 
+from PIL import Image
+
 from . import query as query_mod
 from .config import Config
 from .enroll import enroll
@@ -165,7 +167,7 @@ def make_handler(app: App):
                 self._json(200, self._route(urlparse(self.path).path, body))
             except ImportError:
                 self._json(500, {"error": "model libraries are not installed (see README: Try the photo test)"})
-            except (ValueError, OSError) as e:
+            except (ValueError, OSError, Image.DecompressionBombError) as e:
                 self._json(400, {"error": str(e)})
 
         def _route(self, path, body):
