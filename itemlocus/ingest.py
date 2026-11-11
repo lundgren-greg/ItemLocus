@@ -42,9 +42,12 @@ def safe_filename(name: str) -> str:
 
 
 def load_image(source) -> Image.Image:
-    """Open a path or bytes as upright RGB pixels with no metadata attached."""
-    with Image.open(io.BytesIO(source) if isinstance(source, (bytes, bytearray)) else source) as im:
-        img = ImageOps.exif_transpose(im).convert("RGB")
+    """Open a path, bytes or PIL image as upright RGB pixels with no metadata attached."""
+    if isinstance(source, Image.Image):
+        img = ImageOps.exif_transpose(source).convert("RGB")
+    else:
+        with Image.open(io.BytesIO(source) if isinstance(source, (bytes, bytearray)) else source) as im:
+            img = ImageOps.exif_transpose(im).convert("RGB")
     img.thumbnail((MAX_SIDE, MAX_SIDE))
     return img
 
